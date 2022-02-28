@@ -1,0 +1,37 @@
+; **************************************************************************
+
+; * Global options                                                         *
+
+; **************************************************************************
+
+
+output = /var/log/stunnel.log
+
+pid = /var/run/stunnel.pid
+
+
+; **************************************************************************
+
+; * Forward Proxy options                                                  *
+
+; **************************************************************************
+
+
+[forward-proxy-mail-relay-tls]
+
+client = yes
+
+accept  = localhost:5599
+
+connect = {{ smtp_host}}:465
+
+
+key =  /var/lib/sia/keys/{{ domain }}{{ service}}.key.pem
+
+cert = /var/lib/sia/certs/{{ domain }}{{ service}}.cert.pem
+
+CAfile = /opt/yahoo/share/ssl/certs/yahoo_certificate_bundle.pem
+
+verifyChain = yes
+
+checkHost = {{ smtp_host }}

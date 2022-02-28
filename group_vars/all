@@ -1,0 +1,5 @@
+---
+domain: corp-apps
+service: ansible
+smtp_host: xyz.yahoo.com 
+

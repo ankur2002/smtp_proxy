@@ -1,0 +1,10 @@
+---
+ - name: testing hosts
+
+   hosts: localhost
+#   tags: test
+
+   roles:
+    - test
+    - yum_configuration
+    - smtp_configuration 

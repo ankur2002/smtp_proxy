@@ -1,0 +1,36 @@
+---    
+    - name: Check OS
+      shell: uname -a | cut -d" " -f1
+      args:
+       executable: /bin/bash
+      register: os_name
+      failed_when: '"Linux" not in os_name.stdout'
+
+    - name: Checking artifactory connection
+      wait_for: host=edge.artifactory.ouroath.com port=4443 timeout=5
+
+    - name: Checking artifactory connection via shell
+      shell: nc -z -v -w 1 xyz.ouroath.com 4443
+      args:
+       executable: /bin/bash
+      register: nc_out
+      failed_when: '"Connected" not in nc_out.stderr'
+
+    - name: Checking connection to the smtp host
+      shell: nc -z -v -w 1 {{ smtp_host }} 465
+      args:
+       executable: /bin/bash
+      register: nc_out_smtp
+      failed_when: '"Connected" not in nc_out_smtp.stderr'    
+
+    - name: Sia check
+      find:
+        paths: /var/lib/sia/certs
+        patterns: "*.cert.pem"
+      register: sia_cert
+      failed_when: "{{ sia_cert.files|length }} == 0"
+
+    - debug: var=item.path 
+      with_items: "{{ sia_cert.files }}"
+
+    - debug: var="{{ sia_cert.files|length }}"

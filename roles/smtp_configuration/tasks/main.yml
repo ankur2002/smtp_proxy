@@ -1,0 +1,23 @@
+---
+  - name: install oath-stunnel package
+    yum: 
+     name: oath-stunnel 
+     state: present
+     enablerepo: paranoids_rpm-stable
+     disablerepo: '*'
+     releasever: 7Server
+
+  - name: Copy over the jinja config 
+    template: 
+       src: smtp.conf.j2   
+       dest: /opt/oath/stunnel/conf/stunnel.conf
+
+  - name: Start stunnel
+    shell:
+      cmd: /opt/oath/stunnel/bin/stunnel /opt/oath/stunnel/conf/stunnel.conf
+    args:
+      executable: /bin/bash
+    register: stunnel_start
+    failed_when: stunnel_start.rc != 0
+          
+

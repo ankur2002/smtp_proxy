@@ -1,0 +1,5 @@
+[paranoids_rpm-test]
+name=Paranoids RPM Release Repo
+baseurl=https://artifactory.ouroath.com/artifactory/paranoids_rpm/$releasever/test/$basearch/
+enabled=0
+gpgcheck=0
